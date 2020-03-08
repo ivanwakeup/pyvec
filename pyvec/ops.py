@@ -118,4 +118,3 @@ def axpy(scalar, vec1, vec2):
     scale(vec1, scalar)
     return add(vec1, vec2)
 
-
