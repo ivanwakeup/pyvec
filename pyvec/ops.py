@@ -1,23 +1,8 @@
+from pyvec.decorators import check_vector_sizes
+
+
 class VectorCopyError(Exception):
     pass
-
-
-def check_vector_sizes(func):
-    '''
-    a decorator that ensures all argument vectors are the same size, to support operations like vector addition
-    :param func:
-    :return:
-    '''
-    def check_size_wrapper(*args):
-        prev = None
-        for arg in args:
-            if prev and len(arg) != len(prev):
-                raise VectorCopyError("Vectors aren't equal size, can't perform operation")
-            else:
-                prev = arg
-        return func(*args)
-
-    return check_size_wrapper
 
 
 def transpose(vector):
@@ -117,4 +102,28 @@ def axpy(scalar, vec1, vec2):
     '''
     scale(vec1, scalar)
     return add(vec1, vec2)
+
+
+@check_vector_sizes
+def dot(vector1, vector2):
+    '''
+    returns the dot product of two vectors.
+    :param vector1:
+    :param vector2:
+    :return:
+    '''
+    if not vector1 or not vector2:
+        return
+    if not isinstance(vector1[0], int):
+        vector1 = transpose(vector1)
+    if type(vector2[0]) != type(vector1[0]):
+        vector2 = transpose(vector2)
+    result = 0
+    for i in range(len(vector1)):
+        result+= vector1[i]*vector2[i]
+    return result
+
+
+
+
 
