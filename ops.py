@@ -9,7 +9,7 @@ def copy(vec1, vec2):
     :return:
     '''
     if not vec1 or not vec2:
-        return 0
+        return
 
     if type(vec2[0]) != type(vec1[0]):
         if isinstance(vec2[0], list):
@@ -30,14 +30,7 @@ def copy(vec1, vec2):
         for i in range(len(vec2)):
             vec1[i] = vec2[i]
 
-    return 0
-
-
-vec1 = [1,2,3]
-vec2 = [3,2,1]
-
-copy(vec1, vec2)
-print(vec1)
+    return
 
 
 
