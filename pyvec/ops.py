@@ -44,7 +44,6 @@ def add(vector1, vector2):
 
 
 
-
 def copy(vector1, vector2):
     '''
     copies vector2 into vector1. If the shape of the vectors don't match, vec2 is first transposed to match the shape
