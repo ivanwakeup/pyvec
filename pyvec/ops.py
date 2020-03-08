@@ -29,20 +29,35 @@ def transpose(vector):
     if not vector:
         return
     if isinstance(vector[0], list):
-        return [list(x) for x in zip(*vector)]
+        vect = [list(x) for x in zip(*vector)]
+        return [item for sublist in vect for item in sublist]
     else:
         return [[x] for x in vector]
 
 
 @check_vector_sizes
-def add(vector1, vector2, mutate=False):
+def add(vector1, vector2):
     '''
-    adds two vectors together by modifying vector1 such that vector1[i] = vector2[i] + vector1[i]
+    adds two vectors together by returning a new vector (with the same shape as vector1) such that
+    result_vector[i] = vector1[i] + vector2[i]
     :param vector1:
     :param vector2:
     :return:
     '''
-    return sum(vector2) + sum(vector1)
+    if not vector1 and not vector2:
+        return vector1
+    if type(vector1[0]) != type(vector2[0]):
+        vector2 = transpose(vector2)
+    result = []
+    if isinstance(vector1[0], list):
+        for i in range(len(vector1)):
+            result.append([vector1[i][0] + vector2[i][0]])
+    else:
+        result = [sum(x) for x in zip(vector1, vector2)]
+
+    return result
+
+
 
 
 def copy(vector1, vector2):
@@ -55,12 +70,7 @@ def copy(vector1, vector2):
         return
 
     if type(vector2[0]) != type(vector1[0]):
-        if isinstance(vector2[0], list):
-            vec2t = [list(x) for x in zip(*vector2)]
-            vec2t = [item for sublist in vec2t for item in sublist]
-        else:
-            vec2t = [[x] for x in vector2]
-        vector2 = vec2t
+        vector2 = transpose(vector2)
 
     if len(vector2) != len(vector1):
         raise VectorCopyError("vectors must have the same size to support copying!!")
@@ -107,8 +117,5 @@ def axpy(scalar, vec1, vec2):
     '''
     scale(vec1, scalar)
     return add(vec1, vec2)
-
-
-
 
 
