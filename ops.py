@@ -12,21 +12,29 @@ def copy(vec1, vec2):
         return 0
 
     if type(vec2[0]) != type(vec1[0]):
-        vec2t = [list(x) for x in zip(*vec2)]
+        if isinstance(vec2[0], list):
+            vec2t = [list(x) for x in zip(*vec2)]
+            vec2t = [item for sublist in vec2t for item in sublist]
+        else:
+            vec2t = [[x] for x in vec2]
         vec2 = vec2t
 
     if len(vec2) != len(vec1):
-        raise VectorCopyError
+        raise VectorCopyError("vectors must have the same size to support copying!!")
 
-    for i in range(len(vec2)):
-        for j in range(len(vec2[0])):
-            vec1[i][j] = vec2[i][j]
+    if isinstance(vec2[0], list):
+        for i in range(len(vec2)):
+            for j in range(len(vec2[0])):
+                vec1[i][j] = vec2[i][j]
+    elif isinstance(vec2[0], int):
+        for i in range(len(vec2)):
+            vec1[i] = vec2[i]
 
     return 0
 
 
 vec1 = [1,2,3]
-vec2 = [[2],[3], [1]]
+vec2 = [3,2,1]
 
 copy(vec1, vec2)
 print(vec1)
